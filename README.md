@@ -1,4 +1,4 @@
-apx-express-socket.io
+apx-express-socket.io [![Build Status](https://travis-ci.org/snailjs/apx-express-socket.io.png?branch=master)](https://travis-ci.org/snailjs/apx-express-socket.io)
 ============
 
 Express HTTP Server, and Socket.IO translator for APX API server
