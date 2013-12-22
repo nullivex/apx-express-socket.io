@@ -9,12 +9,11 @@ describe('Initializer Express-Socket.io',function(){
     apx.once('ready',function(){
       done()
     })
-    apx.setup({
+    apx.start({
       testing: true,
       sysLogLevel: 2,
       cwd: __dirname
     })
-    apx.start()
   })
   after(function(done){
     apx.once('dead',function(){
@@ -42,7 +41,7 @@ describe('Initializer Express-Socket.io',function(){
       apx.once('ready',function(apx){
         inst = translator.start(apx,done)
       })
-      apx.setup({
+      apx.start({
         testing: true,
         sysLogLevel: 2,
         cwd: __dirname,
@@ -53,7 +52,6 @@ describe('Initializer Express-Socket.io',function(){
           logLevel: 0
         }
       })
-      apx.start()
     })
     after(function(done){
       apx.once('dead',function(){
