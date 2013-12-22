@@ -13,11 +13,9 @@ $ npm install apx apx-express-socket.io
 
 ```js
 var apx = require('apx')
-apx.setup({
-  translators: ['apx-express-socket.io'],
-  express: {port: 3000}
+apx.start({
+  translators: ['apx-express-socket.io']
 })
-apx.start()
 ```
 
 ## Configuration
@@ -55,7 +53,6 @@ Array of routes that should be accepted.
 ```js
 {
   express: {
-    port: 3000,
     routes: [
       {get: {path: '/status', file: 'actions/status.js'}}
       {post: {path: '/page', file: 'actions/page.js', methods: ['list','find','findOne','save','remove']}}
@@ -88,9 +85,6 @@ Array of routes that should be accepted. These would be considered event listene
 
 ```js
 {
-  express: {
-    port: 3000
-  },
   'socket-io': {
     routes: [
       {status: 'actions/status.js'},
