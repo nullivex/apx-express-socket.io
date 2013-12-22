@@ -1,6 +1,6 @@
 {
   "name": "apx-express-socket.io",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Express HTTP Server, and Socket.IO translator for APX API server",
   "homepage": "https://github.com/snailjs/apx-express-socket.io",
   "bugs": "https://github.com/snailjs/apx-express-socket.io/issues",
@@ -43,7 +43,7 @@
     "mocha": "~1.15.1",
     "chai": "~1.8.1",
     "jshint-stylish": "~0.1.3",
-    "apx": "~0.2.0",
+    "apx": "snailjs/apx#master",
     "request": "~2.30.0",
     "socket.io-client": "~0.9.16"
   },

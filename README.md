@@ -12,23 +12,39 @@ $ npm install apx apx-express-socket.io
 ```
 
 ```js
-var Apx = require('apx')
-var inst = new Apx({
-  translators: [require('apx-express-socket.io')],
+var apx = require('apx')
+apx.setup({
+  translators: ['apx-express-socket.io'],
   express: {port: 3000}
 })
+apx.start()
 ```
 
 ## Configuration
 
 ### Express
 
+### Host
+* Variable `express.host`
+* Require **no**
+* Default `null`
+
+Host for express to listen on will default to the express default otherwise
+
 #### Port
 * Variable `express.port`
-* Required **yes**
-* Default `''`
+* Required **no**
+* Default `3000`
 
-Port to listen on
+Port to listen on otherwise will default to 3000
+
+### Logger
+* Variable `express.logger`
+* Require **no**
+* Default `null`
+
+Enable or disable the express connection logger explicitly. By default it will
+be used during development and disabled when `NODE_ENV` is set to `production`
 
 #### Routes
 * Variable `express.routes`
@@ -49,6 +65,20 @@ Array of routes that should be accepted.
 ```
 
 ### Socket.IO
+
+#### Enabled
+* Variable `socket-io.enabled`
+* Required **no**
+* Default `true`
+
+Enable or disable Socket.IO also listening on the express port.
+
+#### Log Level
+* Variable `socket-io.logLevel`
+* Require **no**
+* Default `3`
+
+The log level passed to socket.io defaults to 3 in development 0 in production.
 
 #### Routes
 * Variable `socket-io.routes`
@@ -71,6 +101,12 @@ Array of routes that should be accepted. These would be considered event listene
 ```
 
 ## Changelog
+
+### 0.2.0
+* Upgraded to work with apx 0.4.0
+* Added addional configuration parameters for express
+* Socket.io can now be disabled through the config
+* Added additional configuration parameters for socket.io
 
 ### 0.1.0
 * Initial release
