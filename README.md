@@ -96,6 +96,10 @@ Array of routes that should be accepted. These would be considered event listene
 
 ## Changelog
 
+### 0.3.0
+* Upgraded to work with apx 0.6.0
+* Response handling now does the rendering in the translator
+
 ### 0.2.0
 * Upgraded to work with apx 0.4.0
 * Added addional configuration parameters for express
