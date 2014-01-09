@@ -90,6 +90,7 @@ describe('Initializer Express-Socket.io',function(){
       it('should parse multipart forms')
       it('should populate the files parameter')
     })
+    it('should respond to options requests')
   })
 
 
