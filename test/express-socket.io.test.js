@@ -74,14 +74,23 @@ describe('Initializer Express-Socket.io',function(){
       })
     })
   })
-  describe('Express GET Requests',function(){
-    it('should route get requests')
-    it('should populate query string params')
+  describe('Express',function(){
+    describe('Routes',function(){
+      it('should register routes for paths with get')
+      it('should register routes for verbs')
+      it('should register methods with routes')
+    })
+    describe('GET Requests',function(){
+      it('should route get requests')
+      it('should populate query string params')
+    })
+    describe('POST Requests',function(){
+      it('should route post requests')
+      it('should populate post params')
+      it('should parse multipart forms')
+      it('should populate the files parameter')
+    })
   })
-  describe('Express POST Requests',function(){
-    it('should route post requests')
-    it('should populate post params')
-    it('should parse multipart forms')
-    it('should populate the files parameter')
-  })
+
+
 })
