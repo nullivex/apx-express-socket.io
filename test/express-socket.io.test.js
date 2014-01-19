@@ -91,7 +91,12 @@ describe('Initializer Express-Socket.io',function(){
       it('should populate the files parameter')
     })
     it('should respond to options requests')
+    it('should handle uploading a single file')
+    it('should handle uploading multiple files')
+    it('should output json')
+    it('should output xml')
+    it('should output raw data')
+    it('should output a file')
   })
-
 
 })
