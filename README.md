@@ -99,6 +99,10 @@ Array of routes that should be accepted. These would be considered event listene
 ### 0.3.0
 * Upgraded to work with apx 0.6.0
 * Response handling now does the rendering in the translator
+* Added `busboy` to handle incoming file uploads
+* Works with latest apx file object format
+* Supports sending json, xml, raw, and files
+* Added extensive testing against input and output formats
 
 ### 0.2.0
 * Upgraded to work with apx 0.4.0
