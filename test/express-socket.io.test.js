@@ -195,4 +195,41 @@ describe('Initializer Express-Socket.io',function(){
       })
     })
   })
+  describe('Socket.IO',function(){
+    var inst
+    before(function(done){
+      apx.once('ready',function(apx){
+        inst = translator.start(apx,done)
+      })
+      apx.start({
+        testing: true,
+        sysLogLevel: 2,
+        cwd: __dirname,
+        express: {
+          enabled: false
+        },
+        'socket-io': {
+          logLevel: 0
+        }
+      })
+    })
+    after(function(done){
+      apx.once('dead',function(){
+        done()
+      })
+      apx.stop()
+    })
+    describe('Routes and Requests',function(){
+      it('should register routes for paths with get')
+      it('should register methods with routes')
+      it('should populate query string params on get')
+      it('should route post requests')
+      it('should populate post params')
+      it('should parse multipart forms with files')
+    })
+    it('should respond to options requests')
+    it('should output xml')
+    it('should output raw data')
+    it('should output a file')
+  })
 })
