@@ -112,7 +112,7 @@ Enable or disable Socket.IO also listening on the express port.
 * Required **no**
 * Default `{}`
 
-Configuration objec to be passed to socket.io at call time.
+Configuration object to be passed to socket.io at call time.
 
 #### Routes
 * Variable `socket-io.routes`
