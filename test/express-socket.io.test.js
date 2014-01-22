@@ -7,6 +7,59 @@ var expect = require('chai').expect
   , translator = require('../lib/express-socket.io')
   , apx = require('apx')
 describe('Initializer Express-Socket.io',function(){
+  var inst, socket
+  before(function(done){
+    apx.once('ready',function(apx){
+      inst = translator.start(apx,function(err){
+        if(err) throw err
+        socket = io.connect('http://localhost:3000')
+        socket.once('connect',done)
+      })
+    })
+    apx.start({
+      testing: true,
+      sysLogLevel: 2,
+      cwd: __dirname,
+      express: {
+        logger: false,
+        routes: [
+          {get: {path: '/get', file: 'action/get.js'}},
+          {get: {path: '/getMethods', file: 'action/getMethods.js', methods: ['test']}},
+          {get: {path: '/getQueryParams', file: 'action/getQueryParams.js'}},
+          {get: {path: '/options', file: 'action/options.js'}},
+          {get: {path: '/xml', file: 'action/xml.js'}},
+          {get: {path: '/raw', file: 'action/raw.js'}},
+          {get: {path: '/file', file: 'action/file.js'}},
+          {post: {path: '/post', file: 'action/post.js'}},
+          {post: {path: '/postParams', file: 'action/postParams.js'}},
+          {post: {path: '/postMultipart', file: 'action/postMultipart.js'}}
+        ]
+      },
+      'socket-io': {
+        config: {
+          'log level': 0
+        },
+        routes: [
+          {socketRoute: 'action/socketRoute.js'},
+          {socketRouteMethods: {file: 'action/socketRouteMethods.js', methods: ['test1','test2']}},
+          {socketObject: 'action/socketObject.js'},
+          {socketRaw: 'action/socketRaw.js'},
+          {socketFile: 'action/socketFile.js'}
+        ]
+      }
+    })
+  })
+  after(function(done){
+    apx.once('dead',function(apx){
+      socket.once('disconnect',function(){
+        translator.stop(apx,function(){
+          done()
+        })
+      })
+      socket.disconnect()
+    })
+    apx.stop()
+  })
   describe('properties',function(){
     it('should have a name',function(){
       expect(translator.name).to.equal('express-socket.io')
@@ -22,29 +75,6 @@ describe('Initializer Express-Socket.io',function(){
     })
   })
   describe('start translator',function(){
-    var inst
-    before(function(done){
-      apx.once('ready',function(apx){
-        inst = translator.start(apx,done)
-      })
-      apx.start({
-        testing: true,
-        sysLogLevel: 2,
-        cwd: __dirname,
-        express: {
-          logger: false
-        },
-        'socket-io': {
-          logLevel: 0
-        }
-      })
-    })
-    after(function(done){
-      apx.once('dead',function(){
-        done()
-      })
-      apx.stop()
-    })
     it('should listen on port 3000',function(done){
       request.get('http://localhost:3000').on('complete',function(body,res){
         expect(res.statusCode).to.equal(404)
@@ -52,50 +82,8 @@ describe('Initializer Express-Socket.io',function(){
         done()
       })
     })
-    it('should accept socket.io connections',function(done){
-      var socket = io.connect('http://localhost:3000')
-      socket.on('connect',function(){
-        done()
-      })
-    })
   })
   describe('Express',function(){
-    var inst
-    before(function(done){
-      apx.once('ready',function(apx){
-        inst = translator.start(apx,done)
-      })
-      apx.start({
-        testing: true,
-        sysLogLevel: 2,
-        cwd: __dirname,
-        express: {
-          logger: false,
-          routes: [
-            {get: {path: '/get', file: 'action/get.js'}},
-            {get: {path: '/getMethods', file: 'action/getMethods.js', methods: ['test']}},
-            {get: {path: '/getQueryParams', file: 'action/getQueryParams.js'}},
-            {get: {path: '/options', file: 'action/options.js'}},
-            {get: {path: '/xml', file: 'action/xml.js'}},
-            {get: {path: '/raw', file: 'action/raw.js'}},
-            {get: {path: '/file', file: 'action/file.js'}},
-            {post: {path: '/post', file: 'action/post.js'}},
-            {post: {path: '/postParams', file: 'action/postParams.js'}},
-            {post: {path: '/postMultipart', file: 'action/postMultipart.js'}}
-          ]
-        },
-        'socket-io': {
-          enabled: false,
-          logLevel: 0
-        }
-      })
-    })
-    after(function(done){
-      apx.once('dead',function(){
-        done()
-      })
-      apx.stop()
-    })
     describe('Routes and Requests',function(){
       it('should register routes for paths with get',function(done){
         request.get('http://localhost:3000/get').on('complete',function(body,res){
@@ -196,40 +184,44 @@ describe('Initializer Express-Socket.io',function(){
     })
   })
   describe('Socket.IO',function(){
-    var inst
-    before(function(done){
-      apx.once('ready',function(apx){
-        inst = translator.start(apx,done)
+    describe('Routes and Requests',function(){
+      it('should register routes',function(done){
+        socket.emit('socketRoute',{foo: 'bar'},function(res){
+          expect(res.status).to.equal('ok')
+          expect(res.code).to.equal('0')
+          expect(res.message).to.equal('success')
+          done()
+        })
       })
-      apx.start({
-        testing: true,
-        sysLogLevel: 2,
-        cwd: __dirname,
-        express: {
-          enabled: false
-        },
-        'socket-io': {
-          logLevel: 0
-        }
+      it('should register methods with routes',function(done){
+        socket.emit('socketRouteMethods:test1',{foo: 'test1'},function(res){
+          expect(res.status).to.equal('ok')
+          expect(res.code).to.equal('0')
+          expect(res.message).to.equal('success')
+          done()
+        })
       })
+
     })
-    after(function(done){
-      apx.once('dead',function(){
+    it('should send object results',function(done){
+      socket.emit('socketObject',{foo: 'object'},function(res){
+        expect(res.foo).to.equal('object')
         done()
       })
-      apx.stop()
     })
-    describe('Routes and Requests',function(){
-      it('should register routes for paths with get')
-      it('should register methods with routes')
-      it('should populate query string params on get')
-      it('should route post requests')
-      it('should populate post params')
-      it('should parse multipart forms with files')
+    it('should send raw results',function(done){
+      socket.emit('socketRaw',{foo: 'raw'},function(res){
+        expect(res).to.equal('foo bar baz')
+        done()
+      })
     })
-    it('should respond to options requests')
-    it('should output xml')
-    it('should output raw data')
-    it('should output a file')
+    it('should fail on file results',function(done){
+      socket.emit('socketFile',{foo: 'file'},function(res){
+        expect(res.status).to.equal('error')
+        expect(res.code).to.equal(1)
+        expect(res.message).to.equal('Cannot send files over Socket.IO')
+        done()
+      })
+    })
   })
 })
