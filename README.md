@@ -63,6 +63,14 @@ Port to listen on otherwise will default to 3000
 Enable or disable the express connection logger explicitly. By default it will
 be used during development and disabled when `NODE_ENV` is set to `production`
 
+### Static
+* Variable `express.static`
+* Required **non**
+* Default `null`
+
+Set this to the root path of the static file server to be used with express. No static server will
+be setup if this variable is not set.
+
 #### Routes
 * Variable `express.routes`
 * Required **no**
@@ -154,6 +162,10 @@ apx.start({
 ```
 
 ## Changelog
+
+### 0.3.1
+* Added req.raw.req and req.raw.res
+* Added static support through config
 
 ### 0.3.0
 * Upgraded to work with apx 0.6.0

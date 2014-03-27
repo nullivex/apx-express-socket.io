@@ -22,6 +22,7 @@ describe('Initializer Express-Socket.io',function(){
       cwd: __dirname,
       express: {
         logger: false,
+        static: __dirname + '/static',
         routes: [
           {get: {path: '/get', file: 'action/get.js'}},
           {get: {path: '/getMethods', file: 'action/getMethods.js', methods: ['test']}},
@@ -30,6 +31,7 @@ describe('Initializer Express-Socket.io',function(){
           {get: {path: '/xml', file: 'action/xml.js'}},
           {get: {path: '/raw', file: 'action/raw.js'}},
           {get: {path: '/file', file: 'action/file.js'}},
+          {get: {path: '/rawReqRes', file: 'action/rawReqRes.js'}},
           {post: {path: '/post', file: 'action/post.js'}},
           {post: {path: '/postParams', file: 'action/postParams.js'}},
           {post: {path: '/postMultipart', file: 'action/postMultipart.js'}}
@@ -179,6 +181,21 @@ describe('Initializer Express-Socket.io',function(){
         expect(body).to.equal('foo bar baz')
         expect(res.headers['content-type']).to.equal('text/plain')
         expect(res.headers['content-disposition']).to.equal('attachment; filename="foo.txt"')
+        done()
+      })
+    })
+    it('should have req and res raw objects',function(done){
+      request.get('http://localhost:3000/rawReqRes').on('complete',function(body,res){
+        expect(res.statusCode).to.equal(200)
+        expect(body.reqExists).to.equal(true)
+        expect(body.resExists).to.equal(true)
+        done()
+      })
+    })
+    it('should serve static files',function(done){
+      request.get('http://localhost:3000/foo.html').on('complete',function(body,res){
+        expect(res.statusCode).to.equal(200)
+        expect(body).to.equal('<html><h1>foo</h1></html>')
         done()
       })
     })
