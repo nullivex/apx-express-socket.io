@@ -1,5 +1,16 @@
-apx-express-socket.io [![Build Status](https://travis-ci.org/snailjs/apx-express-socket.io.png?branch=master)](https://travis-ci.org/snailjs/apx-express-socket.io)
+APX Express Socket IO
 ============
+
+## Kado
+
+STOP AND READ THIS
+
+APX or Apex is no longer maintained and is superseded by Kado.
+
+A new package is available to handle all your JavaScript needs.
+See [kado.org](https://kado.org) for details.
+
+## Summary
 
 Express HTTP Server, and Socket.IO translator for APX API server
 
